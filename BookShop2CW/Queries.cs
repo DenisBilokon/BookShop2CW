@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 
 public static class Queries
 {
+    #region BaseTables
     private static string connectionString = "Data Source=DESKTOP-EUFBETK\\SQLEXPRESS;Initial Catalog=BookShop;Integrated Security=True";
 
     public static DataTable Books()
@@ -23,6 +24,132 @@ public static class Queries
         }
         return table;
     }
+    public static DataTable Authors()
+    {
+        DataTable table = new DataTable();
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+            string query = "SELECT * FROM Authors";
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                {
+                    adapter.Fill(table);
+                }
+            }
+        }
+        return table;
+    }
+    public static DataTable Cities()
+    {
+        DataTable table = new DataTable();
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+            string query = "SELECT * FROM Cities";
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                {
+                    adapter.Fill(table);
+                }
+            }
+        }
+        return table;
+    }
+
+    public static DataTable Countries()
+    {
+        DataTable table = new DataTable();
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+            string query = "SELECT * FROM Countries";
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                {
+                    adapter.Fill(table);
+                }
+            }
+        }
+        return table;
+    }
+    public static DataTable Customers()
+    {
+        DataTable table = new DataTable();
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+            string query = "SELECT * FROM Customers";
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                {
+                    adapter.Fill(table);
+                }
+            }
+        }
+        return table;
+    }
+
+    public static DataTable OrderContents()
+    {
+        DataTable table = new DataTable();
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+            string query = "SELECT * FROM OrderContents";
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                {
+                    adapter.Fill(table);
+                }
+            }
+        }
+        return table;
+    }
+
+    public static DataTable Orders()
+    {
+        DataTable table = new DataTable();
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+            string query = "SELECT * FROM Orders";
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                {
+                    adapter.Fill(table);
+                }
+            }
+        }
+        return table;
+    }
+
+    public static DataTable Publishers()
+    {
+        DataTable table = new DataTable();
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+            string query = "SELECT * FROM Publishers";
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                {
+                    adapter.Fill(table);
+                }
+            }
+        }
+        return table;
+    }
+    #endregion
+
+    #region Querries
     public static DataTable CustomersAndBooks()
     {
         DataTable table = new DataTable();
@@ -106,4 +233,5 @@ public static class Queries
         }
         return table;
     }
+    #endregion
 }
