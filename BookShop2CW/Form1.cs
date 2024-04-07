@@ -102,6 +102,15 @@ namespace BookShop2CW
             {
                 selectedQueryType = listBoxQueries.SelectedItem.ToString();
                 button1.Enabled = true;
+
+                if (selectedQueryType == "CitiesAndCountries" || selectedQueryType == "OrdersWithDetails" || selectedQueryType == "CustomersAndBooks")
+                {
+                    label1.Text = "this is a query, you cannot change it";
+                }
+                else
+                {
+                    label1.Text = "this is a DB table, you can change it";
+                }
             }
             else
             {
