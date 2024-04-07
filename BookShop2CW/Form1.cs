@@ -3,6 +3,7 @@ using System.Data;
 using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Configuration;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace BookShop2CW
 {
@@ -21,12 +22,17 @@ namespace BookShop2CW
         private void Form1_Load(object sender, EventArgs e)
         {
             sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["BookShopDB"].ConnectionString);
-
             sqlConnection.Open();
+
+            listBox2.Items.Clear();
+            listBox2.Items.Add("OrdersSummary");
+            listBox2.Items.Add("AuthorsAndBookAmount");
+            //listBox2.SelectedIndex = 0;
+
 
             if (sqlConnection.State == ConnectionState.Open)
             {
-                MessageBox.Show("Hurray");
+                MessageBox.Show("Connection Established");
             }
 
             listBoxQueries.Items.Add("books");
@@ -77,7 +83,7 @@ namespace BookShop2CW
                     dataGridView1.DataSource = Queries.Publishers();
                     break;
 
-                    //
+                //
                 case "CustomersAndBooks":
                     dataGridView1.DataSource = Queries.CustomersAndBooks();
                     break;
@@ -125,10 +131,81 @@ namespace BookShop2CW
                 MessageBox.Show("Не обрано жодної таблиці для збереження.");
             }
         }
-
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        
+        private string currentQuery = "";
+        private void button2_Click(object sender, EventArgs e)
         {
+            if (listBox2.SelectedItem == null)
+            {
+                MessageBox.Show("Please select a query type.");
+                return;
+            }
 
+            string selectedQuery = listBox2.SelectedItem.ToString();
+
+            switch (selectedQuery)
+            {
+                case "OrdersSummary":
+                    string query1 = "SELECT order_date, SUM(total_amount) AS total_amount FROM Orders GROUP BY order_date";
+                    DataTable table1 = DatabaseHelper.GetData(query1);
+                    chart1.Series.Clear();
+                    chart1.ChartAreas.Clear();
+                    chart1.ChartAreas.Add(new ChartArea());
+                    chart1.Series.Add(new Series());
+                    chart1.Series[0].ChartType = SeriesChartType.Line;
+                    foreach (DataRow row in table1.Rows)
+                    {
+                        chart1.Series[0].Points.AddXY(row["order_date"], row["total_amount"]);
+                    }
+                    chart1.Series[0].Name = "";
+                    chart1.Series[0].IsVisibleInLegend = false;
+                    chart1.Show();
+                    break;
+                case "AuthorsAndBookAmount":
+                    string query2 = @"
+                SELECT Authors.author_name, COUNT(Books.book_id) AS book_count
+                FROM Authors
+                JOIN Books ON Authors.author_id = Books.author_id
+                GROUP BY Authors.author_name";
+                    DataTable table2 = DatabaseHelper.GetData(query2);
+                    chart1.Series.Clear();
+                    chart1.ChartAreas.Clear();
+                    chart1.ChartAreas.Add(new ChartArea());
+                    chart1.Series.Add(new Series());
+                    chart1.Series[0].ChartType = SeriesChartType.Column;
+                    foreach (DataRow row in table2.Rows)
+                    {
+                        chart1.Series[0].Points.AddXY(row["author_name"], row["book_count"]);
+                    }
+                    chart1.Series[0].Name = "";
+                    chart1.Series[0].IsVisibleInLegend = false;
+                    chart1.Show();
+                    break;
+                default:
+                    MessageBox.Show("Unknown query type.");
+                    break;
+            }
+        }
+
+        private void listBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string selectedChart = listBox2.SelectedItem.ToString();
+            string description = "";
+
+            switch (selectedChart)
+            {
+                case "OrdersSummary":
+                    description = "Graph of orders by date and total price by that date";
+                    break;
+                case "AuthorsAndBookAmount":
+                    description = "Graph of authors and the number of their books";
+                    break;
+                default:
+                    description = "Select a chart type";
+                    break;
+            }
+
+            label2.Text = description;
         }
     }
 }
