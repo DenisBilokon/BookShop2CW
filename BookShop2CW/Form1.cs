@@ -51,7 +51,8 @@ namespace BookShop2CW
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            string selectedObject = listBoxQueries.SelectedItem.ToString();
+            DataManager.DisplayObject(selectedObject, dataGridView1);
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -59,39 +60,24 @@ namespace BookShop2CW
             switch (selectedQueryType)
             {
                 case "books":
-                    dataGridView1.DataSource = Queries.Books();
-                    break;
                 case "Authors":
-                    dataGridView1.DataSource = Queries.Authors();
-                    break;
                 case "Cities":
-                    dataGridView1.DataSource = Queries.Cities();
-                    break;
                 case "Countries":
-                    dataGridView1.DataSource = Queries.Countries();
-                    break;
                 case "Customers":
-                    dataGridView1.DataSource = Queries.Customers();
-                    break;
                 case "OrderContents":
-                    dataGridView1.DataSource = Queries.OrderContents();
-                    break;
                 case "Orders":
-                    dataGridView1.DataSource = Queries.Orders();
-                    break;
                 case "Publishers":
-                    dataGridView1.DataSource = Queries.Publishers();
+                    DataManager.DisplayObject(selectedQueryType, dataGridView1);
                     break;
 
-                //
                 case "CustomersAndBooks":
-                    dataGridView1.DataSource = Queries.CustomersAndBooks();
+                    DataManager.DisplayObject("CustomersAndBooks", dataGridView1);
                     break;
                 case "CitiesAndCountries":
-                    dataGridView1.DataSource = Queries.CitiesAndCountries();
+                    DataManager.DisplayObject("CitiesAndCountries", dataGridView1);
                     break;
                 case "OrdersWithDetails":
-                    dataGridView1.DataSource = Queries.OrdersWithDetails();
+                    DataManager.DisplayObject("OrdersWithDetails", dataGridView1);
                     break;
             }
         }
